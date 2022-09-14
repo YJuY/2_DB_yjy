@@ -88,17 +88,57 @@ AND CLASS_NO = (SELECT CLASS_NO
 				WHERE CLASS_NAME = '인간관계론');
 
 --13.---------------------------------------------------------------
-			
+SELECT CLASS_NAME, DEPARTMENT_NAME
+FROM TB_CLASS
+JOIN TB_DEPARTMENT USING(DEPARTMENT_NO)
+WHERE PREATTENDING_CLASS_NO IS NULL
+AND DEPT
+-- 문제이해 X
 --14.---------------------------------------------------------------
-
+ 
+SELECT STUDENT_NAME 학생이름, NVL(COACH_PROFESSOR_NO, '지도교수 미지정') 지도교수
+FROM TB_STUDENT
+WHERE DEPARTMENT_NO = (SELECT DEPARTMENT_NO
+						FROM TB_DEPARTMENT
+						WHERE DEPARTMENT_NAME ='서반아어학과')
+ORDER BY STUDENT_NO;
 
 --15.---------------------------------------------------------------
+SELECT STUDENT_NO 학번, STUDENT_NAME 이름, DEPARTMENT_NAME "학과 이름", AVG(POINT) 평점
+FROM TB_STUDENT
+JOIN TB_DEPARTMENT USING(DEPARTMENT_NO)
+JOIN TB_GRADE USING(STUDENT_NO)
+GROUP BY STUDENT_NO, STUDENT_NAME, DEPARTMENT_NAME
+HAVING AVG(POINT) >= 4.0
+ORDER BY 1;
+
+
 --16.---------------------------------------------------------------
-
-
+SELECT CLASS_NO, CLASS_NAME, TRUNC(AVG(POINT),8)
+FROM TB_CLASS
+JOIN TB_GRADE USING(CLASS_NO)
+JOIN TB_DEPARTMENT USING(DEPARTMENT_NO)
+GROUP BY CLASS_NO, CLASS_NAME;
+HAVING DEPARTMENT_NAME = '환경조경학과';
+HAVING DEPARTMENT_NO = (SELECT DEPARTMENT_NO
+						FROM TB_DEPARTMENT	
+						WHERE DEPARTMENT_NAME = '환경조경학과');
+-- 다시 풀어야함
 --17.---------------------------------------------------------------
---18.---------------------------------------------------------------
+SELECT STUDENT_NAME, STUDENT_ADDRESS
+FROM TB_STUDENT
+WHERE DEPARTMENT_NO = (SELECT DEPARTMENT_NO
+						FROM TB_STUDENT
+						WHERE STUDENT_NAME = '최경희');
 
+
+--18.---------------------------------------------------------------
+SELECT STUDENT_NO, STUDENT_NAME
+FROM TB_STUDENT
+JOIN TB_GRADE USING(STUDENT_NO)
+WHERE AVG(POINT) = (SELECT STUDENT_NAME
+						FROM TB_STUDENT
+						WHERE POINT
 
 --19.---------------------------------------------------------------
 
